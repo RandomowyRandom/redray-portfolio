@@ -1,4 +1,22 @@
+import { useState } from 'react';
+import { collection, addDoc, getFirestore } from 'firebase/firestore';
+import { app } from '../config/firebase';
+
+interface ContactForm {
+  name: string;
+  email: string;
+  message: string;
+}
+
 export function Contact() {
+  const [formData, setFormData] = useState<ContactForm>({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+
   const socialLinks = [
     {
       name: "LinkedIn",
@@ -28,6 +46,34 @@ export function Contact() {
       href: "https://x.com/RedrayDev",
     },
   ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    try {
+      const db = getFirestore(app);
+      await addDoc(collection(db, 'contacts'), {
+        ...formData,
+        timestamp: new Date(),
+      });
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
 
   return (
     <div className="min-h-screen pt-20 bg-background dark:bg-neutral-900">
@@ -62,7 +108,7 @@ export function Contact() {
 
           <div className="w-full h-px bg-neutral-200 dark:bg-neutral-700 mb-12" />
 
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="name" className="block text-sm md:text-base text-text-primary dark:text-white">
                 Name
@@ -70,6 +116,9 @@ export function Contact() {
               <input
                 type="text"
                 id="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
                 className="w-full px-3 md:px-4 py-2 md:py-3 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white text-sm md:text-base"
               />
             </div>
@@ -80,6 +129,9 @@ export function Contact() {
               <input
                 type="email"
                 id="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
                 className="w-full px-3 md:px-4 py-2 md:py-3 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white text-sm md:text-base"
               />
             </div>
@@ -90,14 +142,27 @@ export function Contact() {
               <textarea
                 id="message"
                 rows={5}
+                value={formData.message}
+                onChange={handleChange}
+                required
                 className="w-full px-3 md:px-4 py-2 md:py-3 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white text-sm md:text-base"
               ></textarea>
             </div>
+            
+            {submitStatus && (
+              <div className={`text-sm ${submitStatus === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                {submitStatus === 'success' 
+                  ? 'Message sent successfully!' 
+                  : 'Failed to send message. Please try again.'}
+              </div>
+            )}
+
             <button
               type="submit"
-              className="w-full bg-primary-500 text-white py-2 md:py-3 rounded-lg hover:bg-primary-600 transition text-sm md:text-base"
+              disabled={isSubmitting}
+              className="w-full bg-primary-500 text-white py-2 md:py-3 rounded-lg hover:bg-primary-600 transition text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>
