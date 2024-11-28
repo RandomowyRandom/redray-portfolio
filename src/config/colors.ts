@@ -1,0 +1,92 @@
+export const colors = {
+  light: {
+    primary: {
+      50: '#f0f9ff',
+      100: '#e0f2fe',
+      200: '#bae6fd',
+      300: '#7dd3fc',
+      400: '#38bdf8',
+      500: '#0ea5e9',  // Main primary color
+      600: '#0284c7',
+      700: '#0369a1',
+      800: '#075985',
+      900: '#0c4a6e',
+    },
+    secondary: {
+      50: '#f5f3ff',
+      100: '#ede9fe',
+      200: '#ddd6fe',
+      300: '#c4b5fd',
+      400: '#a78bfa',
+      500: '#8b5cf6',  // Main secondary color
+      600: '#7c3aed',
+      700: '#6d28d9',
+      800: '#5b21b6',
+      900: '#4c1d95',
+    },
+    neutral: {
+      50: '#f8fafc',
+      100: '#f1f5f9',
+      200: '#e2e8f0',
+      300: '#cbd5e1',
+      400: '#94a3b8',
+      500: '#64748b',
+      600: '#475569',
+      700: '#334155',
+      800: '#1e293b',
+      900: '#0f172a',
+    },
+    background: '#ffffff',
+    surface: '#f8fafc',
+    text: {
+      primary: '#1e293b',
+      secondary: '#475569',
+      tertiary: '#64748b',
+    }
+  },
+  dark: {
+    primary: {
+      50: '#f0f9ff',
+      100: '#e0f2fe',
+      200: '#bae6fd',
+      300: '#7dd3fc',
+      400: '#38bdf8',
+      500: '#0ea5e9',
+      600: '#0284c7',
+      700: '#0369a1',
+      800: '#075985',
+      900: '#0c4a6e',
+    },
+    secondary: {
+      50: '#f5f3ff',
+      100: '#ede9fe',
+      200: '#ddd6fe',
+      300: '#c4b5fd',
+      400: '#a78bfa',
+      500: '#8b5cf6',
+      600: '#7c3aed',
+      700: '#6d28d9',
+      800: '#5b21b6',
+      900: '#4c1d95',
+    },
+    neutral: {
+      900: '#f8fafc',
+      800: '#f1f5f9',
+      700: '#e2e8f0',
+      600: '#cbd5e1',
+      500: '#94a3b8',
+      400: '#64748b',
+      300: '#475569',
+      200: '#334155',
+      100: '#1e293b',
+      50: '#0f172a',
+    },
+    background: '#0f172a',
+    surface: '#1e293b',
+    text: {
+      primary: '#f8fafc',
+      secondary: '#e2e8f0',
+      tertiary: '#cbd5e1',
+    }
+  }
+} as const; 
